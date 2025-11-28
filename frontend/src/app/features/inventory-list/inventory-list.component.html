@@ -1,0 +1,129 @@
+<section class="inventory-card card shadow-sm">
+  <div class="card-body">
+    <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center mb-3">
+      <div>
+        <h1 class="h3 mb-1">Inventory</h1>
+        <p class="text-muted mb-0">Track, filter, and manage items across every cinema.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <a routerLink="/statistics" class="btn btn-outline-secondary">Statistics</a>
+        <a routerLink="/add" class="btn btn-primary">Add Item</a>
+      </div>
+    </div>
+
+    <div *ngIf="flashMessage() as message" class="alert alert-success py-2">
+      {{ message }}
+    </div>
+
+    <div
+      *ngIf="error() as errorMessage"
+      class="alert alert-danger d-flex justify-content-between align-items-center py-2"
+    >
+      <span>{{ errorMessage }}</span>
+      <button type="button" class="btn btn-sm btn-light" (click)="refresh()">Retry</button>
+    </div>
+
+    <div class="d-flex flex-wrap gap-3 align-items-center mb-3">
+      <label class="fw-semibold text-muted m-0">Filter by location</label>
+      <select
+        class="form-select w-auto"
+        [value]="selectedLocation()"
+        (change)="onLocationChange($event)"
+      >
+        <option value="all">All locations</option>
+        <ng-container *ngFor="let location of locations()">
+          <option [value]="location.id">{{ location.name }}</option>
+        </ng-container>
+      </select>
+      <div class="w-100 text-danger small" *ngIf="locationError()">
+        {{ locationError() }}
+      </div>
+      <div class="ms-auto text-muted small">Showing {{ pageSummary() }}</div>
+    </div>
+
+    <div class="table-responsive position-relative">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th (click)="changeSort('name')" class="sortable" [class.active]="sortField() === 'name'">
+              Item Name
+              <span class="sort-indicator" *ngIf="sortField() === 'name'">
+                {{ sortDirection() === 'asc' ? '▲' : '▼' }}
+              </span>
+            </th>
+            <th
+              (click)="changeSort('location')"
+              class="sortable"
+              [class.active]="sortField() === 'location'"
+            >
+              Location
+              <span class="sort-indicator" *ngIf="sortField() === 'location'">
+                {{ sortDirection() === 'asc' ? '▲' : '▼' }}
+              </span>
+            </th>
+            <th
+              (click)="changeSort('price')"
+              class="sortable text-end"
+              [class.active]="sortField() === 'price'"
+            >
+              Price (GEL)
+              <span class="sort-indicator" *ngIf="sortField() === 'price'">
+                {{ sortDirection() === 'asc' ? '▲' : '▼' }}
+              </span>
+            </th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!inventories().length && !loading()">
+            <td colspan="4" class="text-center py-4 text-muted">No items found.</td>
+          </tr>
+          <tr *ngFor="let item of inventories()">
+            <td class="fw-semibold">{{ item.name }}</td>
+            <td>{{ item.location?.name ?? 'Unknown' }}</td>
+            <td class="text-end">
+              {{ item.price | currency: 'GEL':'symbol':'1.2-2' }}
+            </td>
+            <td class="text-end">
+              <button
+                class="btn btn-outline-danger btn-sm"
+                type="button"
+                (click)="deleteInventory(item)"
+                [disabled]="loading()"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div
+        class="loading-overlay d-flex flex-column align-items-center justify-content-center"
+        *ngIf="loading()"
+      >
+        <div class="spinner-border text-primary mb-2" role="status"></div>
+        <span class="text-muted small">Loading inventory...</span>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-3">
+      <div class="text-muted small">
+        Total items: <strong>{{ totalItems() | number }}</strong>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-outline-secondary" (click)="changePage(-1)" [disabled]="page() === 1 || loading()">
+          Previous
+        </button>
+        <button
+          class="btn btn-outline-secondary"
+          (click)="changePage(1)"
+          [disabled]="page() >= totalPages() || loading()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+

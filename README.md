@@ -1,59 +1,70 @@
-# CaveaFullStack
+# Cavea Inventory Management
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
+Full-stack inventory management exercise built with Angular 20, Bootstrap 5, Node.js 22, Express, Sequelize v6, and PostgreSQL. The repository is organized into two standalone apps:
 
-## Development server
+- `frontend/`: Angular client for browsing, filtering, adding, and analyzing inventory.
+- `backend/`: Express + Sequelize API backed by PostgreSQL.
 
-To start a local development server, run:
+## Prerequisites
 
-```bash
-ng serve
-```
+- Node.js 22 LTS
+- npm 10+
+- PostgreSQL 14+
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Backend Setup
 
 ```bash
-ng generate component component-name
+cd backend
+cp env.example .env        # adjust credentials
+npm install
+createdb cavea_inventory   # or any DB named in your .env
+npm run dev
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Key scripts:
+
+- `npm run dev` – start the API with live reload.
+- `npm run build && npm start` – compile and serve the production build.
+- `npm run seed:test-data` – generate up to 500,000 inventory rows (configure via `SEED_RECORDS`, `SEED_BATCH_SIZE`, `SEED_RESET` env vars). This script is deterministic and can be re-run without code changes.
+
+### API Overview
+
+| Method | Endpoint                     | Description                                                  |
+| ------ | ---------------------------- | ------------------------------------------------------------ |
+| GET    | `/inventories`               | Paginated list (20 per page) with filtering & sorting.       |
+| POST   | `/inventories`               | Create an inventory item (`name`, `price`, `locationId`).    |
+| DELETE | `/inventories/:id`           | Delete an inventory item.                                    |
+| GET    | `/inventories/statistics`    | Per-location totals (count + price sum).                     |
+| GET    | `/locations`                 | List of selectable cinema locations.                         |
+
+Filtering happens server-side; sorting supports `name`, `price`, and `location`.
+
+## Frontend Setup
 
 ```bash
-ng generate --help
+cd frontend
+npm install
+npm start   # runs on http://localhost:4200
 ```
 
-## Building
+Features:
 
-To build the project run:
+- Paginated table (20 items/page) with server-driven filtering and sorting.
+- Location dropdown backed by the `/locations` endpoint.
+- Add-item form with validation on `/add`.
+- Statistics page summarizing totals per cinema.
+- Delete actions that call the API directly.
 
-```bash
-ng build
-```
+Adjust `frontend/src/environments/environment*.ts` if the API runs on a non-default host/port.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Testing With 500k Records
 
-## Running unit tests
+1. Ensure the database is reachable and the API is stopped.
+2. In `backend/.env`, set `SEED_RECORDS=500000` (or another target) and optional `SEED_BATCH_SIZE`.
+3. Run `npm run seed:test-data` from `backend/`.
+4. Start the API (`npm run dev`) and open the UI. Pagination/navigation remain responsive even with the large dataset.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Commit Strategy
 
-```bash
-ng test
-```
+When committing locally, create meaningful messages that capture incremental progress (e.g., backend scaffolding, API endpoints, Angular UI, docs).
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

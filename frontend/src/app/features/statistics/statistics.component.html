@@ -1,0 +1,53 @@
+<section class="card shadow-sm">
+  <div class="card-body">
+    <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center mb-4">
+      <div>
+        <h1 class="h3 mb-1">Location Statistics</h1>
+        <p class="text-muted mb-0">Inventory totals per cinema location.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary" type="button" (click)="refresh()" [disabled]="loading()">
+          Refresh
+        </button>
+        <a routerLink="/" class="btn btn-primary">Back to list</a>
+      </div>
+    </div>
+
+    <div *ngIf="error()" class="alert alert-danger py-2">{{ error() }}</div>
+
+    <div class="table-responsive position-relative">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>Cinema Location</th>
+            <th class="text-end">Products</th>
+            <th class="text-end">Total Value (GEL)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!stats().length && !loading()">
+            <td colspan="3" class="text-center text-muted py-4">No data available.</td>
+          </tr>
+          <tr *ngFor="let row of stats()">
+            <td class="fw-semibold">{{ row.locationName }}</td>
+            <td class="text-end">{{ row.itemCount | number }}</td>
+            <td class="text-end">{{ row.totalPrice | currency: 'GEL':'symbol':'1.2-2' }}</td>
+          </tr>
+          <tr *ngIf="stats().length" class="table-light fw-semibold">
+            <td>Total</td>
+            <td class="text-end">{{ totalProducts() | number }}</td>
+            <td class="text-end">{{ totalValue() | currency: 'GEL':'symbol':'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        class="loading-overlay d-flex flex-column align-items-center justify-content-center"
+        *ngIf="loading()"
+      >
+        <div class="spinner-border text-primary mb-2" role="status"></div>
+        <span class="text-muted small">Loading statistics...</span>
+      </div>
+    </div>
+  </div>
+</section>
+
