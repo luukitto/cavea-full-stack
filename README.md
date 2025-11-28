@@ -1,3 +1,4 @@
+მოგესალმებით კავეას მენეჯმენტის პლატფორმაზე, ვიმედოვნებ სრულყოფილად შევასრულე თქვენი მოთხოვნები, დეტალურ ინსტრუქციას ქვემოთ დავურთავ ინგლისურად(ასე უფრო მეკომფორტულება) მადლობა წინასწარ, პ.ს ლუკა ლობჟანიძე
 # Cavea Inventory Management
 
 Full-stack inventory management exercise built with Angular 20, Bootstrap 5, Node.js 22, Express, Sequelize v6, and PostgreSQL. The repository is organized into two standalone apps:
@@ -15,9 +16,9 @@ Full-stack inventory management exercise built with Angular 20, Bootstrap 5, Nod
 
 ```bash
 cd backend
-cp env.example .env        # adjust credentials
+cp env.example .env
 npm install
-createdb cavea_inventory   # or any DB named in your .env
+createdb cavea_inventory  
 npm run dev
 ```
 
@@ -44,7 +45,7 @@ Filtering happens server-side; sorting supports `name`, `price`, and `location`.
 ```bash
 cd frontend
 npm install
-npm start   # runs on http://localhost:4200
+npm start 
 ```
 
 Features:
