@@ -1,7 +1,6 @@
-მოგესალმებით კავეას მენეჯმენტის პლატფორმაზე, ვიმედოვნებ სრულყოფილად შევასრულე თქვენი მოთხოვნები, დეტალურ ინსტრუქციას ქვემოთ დავურთავ ინგლისურად(ასე უფრო მეკომფორტულება) მადლობა წინასწარ, პ.ს ლუკა ლობჟანიძე
 # Cavea Inventory Management
 
-Full-stack inventory management exercise built with Angular 20, Bootstrap 5, Node.js 22, Express, Sequelize v6, and PostgreSQL. The repository is organized into two standalone apps:
+Full-stack inventory management platform built with Angular 20, Bootstrap 5, Node.js 22, Express, Sequelize v6, and PostgreSQL. The repository is organized into two standalone apps:
 
 - `frontend/`: Angular client for browsing, filtering, adding, and analyzing inventory.
 - `backend/`: Express + Sequelize API backed by PostgreSQL.
