@@ -15,7 +15,7 @@ Full-stack inventory management platform built with Angular 20, Bootstrap 5, Nod
 
 ```bash
 cd backend
-cp env.example .env
+cp .env.example .env
 npm install
 createdb cavea_inventory  
 npm run dev
